@@ -1,4 +1,6 @@
 mod lexer;
+mod parser;
+mod ast;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let Some(path) = std::env::args().nth(1) else {
@@ -8,10 +10,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let file = std::fs::read_to_string(path)?;
+    let out = parser::parse(&file);
+    println!("{out:#?}");
+    /*
     let lexer = lexer::lex(&file);
     for token in lexer {
         println!("{token:?}");
     }
+    */
 
     Ok(())
 }

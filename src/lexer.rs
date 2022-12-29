@@ -1,12 +1,13 @@
 use std::iter::Peekable;
 use std::ops::Range;
 use std::str::Chars;
+use crate::parser::Precedence;
 
-pub fn lex<'a>(input: &'a str) -> impl Iterator<Item = Token> + 'a {
+pub fn lex(input: &str) -> Lexer {
     Lexer::new(input)
 }
 
-struct Lexer<'a> {
+pub struct Lexer<'a> {
     input: &'a str,
     pos: usize,
     iter: Peekable<Chars<'a>>,
@@ -151,21 +152,23 @@ fn is_ident_continuation(c: char) -> bool {
 
 #[derive(Debug)]
 pub struct Token {
-    kind: TokenKind,
-    span: Range<usize>,
+    pub kind: TokenKind,
+    pub span: Range<usize>,
 }
 
-#[derive(Debug)]
-enum TokenKind {
+#[derive(Debug, Eq, PartialEq)]
+pub enum TokenKind {
     Keyword(Keyword),
-    Ident(String),
+    Ident(Ident),
     Punct(Punct),
     Literal(Literal),
     Operator(Operator),
 }
 
-#[derive(Debug)]
-enum Keyword {
+pub type Ident = String;
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum Keyword {
     Let,
     If,
     While,
@@ -174,8 +177,8 @@ enum Keyword {
     Struct,
 }
 
-#[derive(Debug)]
-enum Punct {
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum Punct {
     LParen,
     RParen,
     LBrace,
@@ -188,8 +191,8 @@ enum Punct {
     Semicolon,
 }
 
-#[derive(Debug)]
-enum Literal {
+#[derive(Debug, Eq, PartialEq)]
+pub enum Literal {
     Int {
         value: i32,
         ty: Option<IntType>,
@@ -197,16 +200,16 @@ enum Literal {
     },
 }
 
-#[derive(Debug)]
-enum IntType {
+#[derive(Debug, Eq, PartialEq)]
+pub enum IntType {
     U8,
     U16,
     I8,
     I16,
 }
 
-#[derive(Debug)]
-enum Operator {
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum Operator {
     Plus,
     Minus,
     Eq,

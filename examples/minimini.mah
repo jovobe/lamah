@@ -1,8 +1,9 @@
 fn main() {
+    let foo = a == b + c == d;
     let x = 1;
     let acc = 0;
     while (x < 10) {
 		acc += x;
 		x += 1;
-    }
+    };
 }
