@@ -1,3 +1,5 @@
+mod debug;
+
 use crate::lexer::{Ident, Literal, Operator};
 
 #[derive(Debug)]
@@ -5,7 +7,6 @@ pub struct File {
     pub items: Vec<Item>,
 }
 
-#[derive(Debug)]
 pub enum Item {
     Fn(Fn),
 }
@@ -16,7 +17,6 @@ pub struct Fn {
     pub body: Vec<Expr>,
 }
 
-#[derive(Debug)]
 pub enum Expr {
     Let(LetExpr),
     While(WhileExpr),
@@ -41,8 +41,8 @@ pub struct WhileExpr {
 
 #[derive(Debug)]
 pub struct BinOpExpr {
-    pub op: BinOp,
     pub lhs: Box<Expr>,
+    pub op: BinOp,
     pub rhs: Box<Expr>,
 }
 
@@ -52,7 +52,6 @@ pub struct IfExpr {
     pub then: Vec<Expr>,
 }
 
-#[derive(Debug)]
 pub struct VarExpr {
     pub name: Ident,
 }
