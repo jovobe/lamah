@@ -1,6 +1,7 @@
 mod lexer;
 mod parser;
 mod ast;
+mod backend;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let Some(path) = std::env::args().nth(1) else {
